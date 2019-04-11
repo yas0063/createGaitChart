@@ -22,6 +22,7 @@ class mainWindow:
 
         self.shortcut_keys ={'a':0, 's':1, 'd':2, 'q':3, 'w':4, 'e':5}
 
+
         self.root = Tk.Tk()
         self.root.title(u"create gait chart")
         self.root.configure(width = 800, height=600, bg='gray60')
@@ -37,13 +38,23 @@ class mainWindow:
         for i in range(self.nLegs):
             self.state.append(Tk.BooleanVar())
             self.state[i].set(False)
-
-
         self.root.bind("<Key>", self.key_callback)
 
-        self.canvas = Tk.Canvas(self.root, width = 800, height = 350, bg='gray60')
+        self.cXOffset = 50
+        self.cYOffset = 30
+        self.cfWidth = 800
+        self.cfHeight = 350
+        self.cdWidth = 720
+        self.cdHeight = 300
+        self.x_div = 20
+
+        self.dispFrameNum = int(self.cdWidth/self.x_div) -1
+        self.y_div = int(self.cdHeight/self.nLegs)
+
+
+        self.canvas = Tk.Canvas(self.root, width = self.cfWidth, height = self.cfHeight, bg='gray60')
         self.canvas.grid(row=0, column=0, columnspan=8, padx=0, pady=0)
-        self.canvas.create_rectangle(50, 30, 750, 330, fill = 'white')
+        self.canvas.create_rectangle(self.cXOffset, self.cYOffset, self.cXOffset+self.cdWidth, self.cYOffset+self.cdHeight, fill = 'white')
 
         self.updateGaitChart()
 
@@ -55,7 +66,7 @@ class mainWindow:
     def createCheckboxes(self):
 
         for i in range(self.nLegs):
-            self.checkboxes.append(Tk.Checkbutton(text=self.legLabels[i], variable=self.state[i]))
+            self.checkboxes.append(Tk.Checkbutton(text=self.legLabels[i], variable=self.state[i],command=self.updateDisp))
 
         self.cbLabel = Tk.Label(width=10, text='leg state',bg='gray30', fg='white')
         self.cbLabel.grid(row=2, column=1, columnspan=2,padx=1, pady=5)
@@ -124,48 +135,40 @@ class mainWindow:
 
     def updateGaitChart(self):
 
-        xOffset = 50
-        yOffset = 30
 
-        self.canvas.create_rectangle(0, 0, 800, 350, fill = 'gray60')#塗りつぶし
-        self.canvas.create_rectangle(50, 30, 750, 330, fill = 'white')#塗りつぶし
+        self.canvas.create_rectangle(0, 0, self.cfWidth, self.cfHeight, fill = 'gray60')
+        self.canvas.create_rectangle(self.cXOffset, self.cYOffset, self.cXOffset+self.cdWidth, self.cYOffset+self.cdHeight, fill = 'white')#塗りつぶし
 
-        dispFrameNum = 34
-        y_div = 300/self.nLegs
 
-        if len(self.result) - dispFrameNum < 0:
-            dispStartFrame = 0
-        else:
-            dispStartFrame = self.frame - dispFrameNum
+        dispStartFrame = np.clip(self.frame - self.dispFrameNum,0,self.frame)
+        dispLastFrame = min(len(self.result), dispStartFrame + self.dispFrameNum+1)
 
-        for f in range(dispStartFrame, len(self.result)):
+        for f in range(dispStartFrame, dispLastFrame):
             for i in range(self.nLegs):
-                xl = xOffset+(f-dispStartFrame) * 20
-                xh = xl+20
+                xl = self.cXOffset+(f-dispStartFrame) * self.x_div
+                xh = xl+self.x_div
                 if self.result[f][i+2] == 1:
-                    self.canvas.create_rectangle(xl, yOffset+i*y_div, xh, yOffset+(i+1)*y_div, fill = 'black')
+                    self.canvas.create_rectangle(xl, self.cYOffset+i*self.y_div, xh, self.cYOffset+(i+1)*self.y_div, fill = 'black')
                 else:
-                    self.canvas.create_rectangle(xl, yOffset+i*y_div, xh, yOffset+(i+1)*y_div, fill = 'white')
+                    self.canvas.create_rectangle(xl, self.cYOffset+i*self.y_div, xh, self.cYOffset+(i+1)*self.y_div, fill = 'white')
 
-            self.canvas.create_text(xl+10,yOffset+(i+1)*y_div+10, text=str(f),font=("Helvetica", 14), fill='white')
+            self.canvas.create_text(xl+10,self.cYOffset+(i+1)*self.y_div+10, text=str(f),font=("Helvetica", 14), fill='white')
 
         for i in range(self.nLegs):
-            xl = xOffset+(self.frame-dispStartFrame) * 20
-            xh = xl+20
+            xl = self.cXOffset+(self.frame-dispStartFrame) * self.x_div
+            xh = xl+self.x_div
             if self.state[i].get() == True:
-                    self.canvas.create_rectangle(xl, yOffset+i*y_div, xh, yOffset+(i+1)*y_div, fill = 'gray50')
+                    self.canvas.create_rectangle(xl, self.cYOffset+i*self.y_div, xh, self.cYOffset+(i+1)*self.y_div, fill = 'gray50')
             else:
-                self.canvas.create_rectangle(xl, yOffset+i*y_div, xh, yOffset+(i+1)*y_div, fill = 'white')
+                self.canvas.create_rectangle(xl, self.cYOffset+i*self.y_div, xh, self.cYOffset+(i+1)*self.y_div, fill = 'white')
 
-            self.canvas.create_text(xOffset/2,yOffset+i*y_div+y_div/2, text=self.legLabels[i],font=("Helvetica", 18, "bold"), fill='white')
-
-
-        xf = xOffset+(self.frame - dispStartFrame)*20
-        self.canvas.create_rectangle(xf, yOffset, xf+20, 330, outline = 'red', width = 2)
-        self.canvas.create_text(xf+10,yOffset+(i+1)*y_div+10, text=str(self.frame),font=("Helvetica", 14), fill='red')
+            self.canvas.create_text(self.cXOffset/2,self.cYOffset+i*self.y_div+self.y_div/2, text=self.legLabels[i],font=("Helvetica", 18, "bold"), fill='white')
 
 
-        ## disp label
+        xf = self.cXOffset+(self.frame - dispStartFrame)*self.x_div
+        self.canvas.create_rectangle(xf, self.cYOffset, xf+self.x_div, self.cYOffset+self.cdHeight, outline = 'red', width = 2)
+        self.canvas.create_text(xf+10,self.cYOffset+(i+1)*self.y_div+10, text=str(self.frame),font=("Helvetica", 14), fill='red')
+
 
     def appendNowState(self, insertMode=False):
         self.frameTime = datetime.datetime.strptime(self.ttime.get(),"%H:%M:%S.%f")
