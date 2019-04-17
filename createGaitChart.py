@@ -96,8 +96,8 @@ class mainWindow:
         self.button_insert.grid(row=4,column=3, columnspan=1, padx=2, pady=10)
         self.button_delete.grid(row=5,column=3, columnspan=1, padx=2, pady=10)
 
-        self.button_prev.grid(row=5,column=5, columnspan=1, padx=2, pady=10, sticky=Tk.W)
-        self.button_next.grid(row=6,column=5, columnspan=1, padx=2, pady=10, sticky=Tk.W)
+        self.button_prev.grid(row=4,column=5, columnspan=1, padx=2, pady=10, sticky=Tk.W)
+        self.button_next.grid(row=4,column=5, columnspan=1, padx=2, pady=10, sticky=Tk.E)
         self.button_fset.grid(row=3,column=5, columnspan=1, padx=2, pady=10)
 
         self.lframe = Tk.Label(width=5, text='frame',bg='gray30', fg='white')
@@ -106,12 +106,19 @@ class mainWindow:
         self.tframe.grid(row=3, column=5, padx=1, pady=5, sticky=Tk.W)
 
         self.ltime = Tk.Label(width=5, text='time',bg='gray30', fg='white')
-        self.ltime.grid(row=4, column=4, padx=1, pady=5, sticky=Tk.E)
+        self.ltime.grid(row=5, column=4, padx=1, pady=5, sticky=Tk.E)
         self.ttime = Tk.Entry(width=20)
-        self.ttime.grid(row=4, column=5, padx=1, pady=5, sticky=Tk.W)
+        self.ttime.grid(row=5, column=5, padx=1, pady=5, sticky=Tk.W)
+
+        self.lmframe = Tk.Label(width=10, text='movie frame',bg='gray30', fg='white')
+        self.lmframe.grid(row=6, column=4, padx=1, pady=5, sticky=Tk.E)
+        self.tmframe = Tk.Entry(width=5)
+        self.tmframe.grid(row=6, column=5, padx=1, pady=5, sticky=Tk.W)
 
         self.tframe.insert(Tk.END,str(self.frame))
         self.ttime.insert(Tk.END,self.frameTime.strftime("%H:%M:%S.%f"))
+        self.tmframe.insert(Tk.END,'0')
+
 
         self.button_save.grid(row=3,column=6, columnspan=1, padx=2, pady=10)
         self.button_load.grid(row=4,column=6, columnspan=1, padx=2, pady=10)
@@ -120,10 +127,15 @@ class mainWindow:
 
     def updateDisp(self):
         self.updateFrameNum()
+        self.updateMovieFrameNum()
         self.updateTime()
         self.updateState()
         self.updateGaitChart()
 
+    def updateMovieFrameNum(self):
+        if not self.frame == len(self.result):
+            self.tmframe.delete(0, Tk.END)
+            self.tmframe.insert(Tk.END,str(self.result[np.clip(self.frame, 0, len(self.result))][2]))
 
     def updateFrameNum(self):
         self.tframe.delete(0, Tk.END)
@@ -174,7 +186,8 @@ class mainWindow:
 
     def appendNowState(self, insertMode=False):
         self.frameTime = datetime.datetime.strptime(self.ttime.get(),"%H:%M:%S.%f")
-        tmp = [self.frame, self.frameTime.strftime("%H:%M:%S.%f")]
+        tmp = [self.frame, self.frameTime.strftime("%H:%M:%S.%f"), int(self.tmframe.get())]
+        print(tmp)
         for i in range(self.nLegs):
             if self.state[i].get() == True:
                 tmp.append(1)
@@ -233,10 +246,11 @@ class mainWindow:
         if not data == []:
             self.result=[]
             for i in range(len(data)):
-                tmp=[int(data[i][0])]
-                tmp.append(data[i][1])
+                tmp=[int(data[i][0])]  # frame num
+                tmp.append(data[i][1]) # time 
+                tmp.append(int(data[i][2])) # movie frame num
                 for n in range(self.nLegs):
-                    tmp.append(int(data[i][n+2]))
+                    tmp.append(int(data[i][n+3]))
                 self.result.append(tmp)
         self.updateDisp()
 
