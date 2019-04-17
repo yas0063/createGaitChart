@@ -259,8 +259,9 @@ class mainWindow:
         self.updateDisp()
 
     def on_btn_delete_click(self):
-        self.result.pop(self.frame)
-        self.updateDisp()
+        if not self.frame == len(self.result):
+            self.result.pop(self.frame)
+            self.updateDisp()
 
     def on_btn_shutdown_click(self):
         self.root.quit()
