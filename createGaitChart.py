@@ -161,7 +161,7 @@ class mainWindow:
             for i in range(self.nLegs):
                 xl = self.cXOffset+(f-dispStartFrame) * self.x_div
                 xh = xl+self.x_div
-                if self.result[f][i+2] == 1:
+                if self.result[f][i+3] == 1:
                     self.canvas.create_rectangle(xl, self.cYOffset+i*self.y_div, xh, self.cYOffset+(i+1)*self.y_div, fill = 'black')
                 else:
                     self.canvas.create_rectangle(xl, self.cYOffset+i*self.y_div, xh, self.cYOffset+(i+1)*self.y_div, fill = 'white')
@@ -187,7 +187,6 @@ class mainWindow:
     def appendNowState(self, insertMode=False):
         self.frameTime = datetime.datetime.strptime(self.ttime.get(),"%H:%M:%S.%f")
         tmp = [self.frame, self.frameTime.strftime("%H:%M:%S.%f"), int(self.tmframe.get())]
-        print(tmp)
         for i in range(self.nLegs):
             if self.state[i].get() == True:
                 tmp.append(1)
@@ -204,7 +203,7 @@ class mainWindow:
     def updateState(self):
         if not self.frame == len(self.result):
             for i in range(self.nLegs):
-                if self.result[self.frame][i+2] == 1:
+                if self.result[self.frame][i+3] == 1:
                     self.state[i].set(True)
                 else:
                     self.state[i].set(False)
