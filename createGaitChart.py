@@ -39,6 +39,8 @@ class mainWindow:
             self.state.append(Tk.BooleanVar())
             self.state[i].set(False)
         self.root.bind("<Key>", self.key_callback)
+        self.root.bind("<Return>", self.return_callback)
+
 
         self.cXOffset = 50
         self.cYOffset = 30
@@ -270,7 +272,8 @@ class mainWindow:
             self.on_btn_sset_click()
         self.updateGaitChart()
 
-
+    def return_callback(self, event):
+        self.ltime.focus_set()
 
 
 import sys
