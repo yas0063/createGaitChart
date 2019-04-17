@@ -149,7 +149,7 @@ class mainWindow:
 
     def updateGaitChart(self):
 
-
+        self.canvas.delete("all")
         self.canvas.create_rectangle(0, 0, self.cfWidth, self.cfHeight, fill = 'gray60')
         self.canvas.create_rectangle(self.cXOffset, self.cYOffset, self.cXOffset+self.cdWidth, self.cYOffset+self.cdHeight, fill = 'white')#塗りつぶし
 
