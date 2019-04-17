@@ -266,6 +266,8 @@ class mainWindow:
             self.on_btn_prev_click()
         elif key == 'f':
             self.on_btn_sset_click()
+        elif key == 'h':
+            self.on_btn_sset_click()
         self.updateGaitChart()
 
 
