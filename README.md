@@ -1,17 +1,19 @@
-# createGaitChart
+# createGaitChart & createFig
 
 
 ## Overview
 
-This python script may help people who create a gait chart manually from videos 
+This python script may help people who create a gait chart manually from videos
 
 ## Requirements
 
 It probably works on anaconda environment. However, if numpy and tkinter are installed, anaconda env is not required.
 
-## Usage
+## createGaitChart
 
-### booting up
+### Usage
+
+#### booting up
 
 ```
 $ python createGaitChart.py 
@@ -32,7 +34,7 @@ If the target is a crow
 $ python createGaitChart.py 2
 ```
 
-### input data
+#### input data
 
 1. toggle each leg state based on leg state
 2. input time
@@ -49,6 +51,21 @@ Shortcut keys will help input work.
   - f: set/chage button (append current state to result)
   - n: next button (move next frame)
   - b: prev button (move previous frame)
+
+
+## createFig
+
+Create figure of gait chart from data file that created with createGaitChart.py. Current version only supports movie frame number although output csv file from createGaitChart can include data of time.
+
+### Usage
+```
+createFig.py [-h] [-o OUTPUTFILENAME] datafilename
+```
+
+#### optional arguments
+- -h, --help            show help message and exit
+- -o OUTPUTFILENAME, --outputfilename OUTPUTFILENAME,  default output filename is ./output.pdf
+
 
 ## NOTE
 

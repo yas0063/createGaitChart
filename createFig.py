@@ -2,16 +2,16 @@
 import numpy as np
 import csv
 import datetime
-import argparse    # 1. argparseをインポート
+import argparse    
 
 import matplotlib
 import matplotlib.pyplot as plt
 
-parser = argparse.ArgumentParser(description='Create gait chart figure')    # 2. パーサを作る
-parser.add_argument('filename')    # 必須の引数を追加
-parser.add_argument('-o','--outfilename', default='output.pdf')
-parser.add_argument('-t', '--time', action='store_true')
-parser.add_argument('-f', '--frame', action='store_true')
+parser = argparse.ArgumentParser(description='Create figure of gait chart from data file that created with createGaitChart.py')    
+parser.add_argument('datafilename')    # 必須の引数を追加
+parser.add_argument('-o','--outputfilename', default='output.pdf', help='default is output.pdf')
+#parser.add_argument('-t', '--time', action='store_true', help='create figure based on time')
+#parser.add_argument('-f', '--frame', action='store_true', help='create figure based on movie frame number')
 args = parser.parse_args()
 
 data =[]
