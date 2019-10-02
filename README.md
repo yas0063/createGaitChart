@@ -59,7 +59,8 @@ Shortcut keys will help input work.
   - q: toggle R1
   - w: toggle R2
   - e: toggle R3
-  - f: set/chage button (append current state to result)
+  - g: set/chage (append current state to result) and move next frame
+  - f: set/chage (append current state to result) and move previous frame
   - n: next button (move next frame)
   - b: prev button (move previous frame)
   - A: fill L1 with black until last black cell

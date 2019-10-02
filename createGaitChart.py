@@ -93,7 +93,7 @@ class mainWindow:
         self.button_load = Tk.Button(self.root,text="load",width=10,command=self.on_btn_load_click)
         self.button_shutdown = Tk.Button(self.root,text="shutdowm",width=10,command=self.on_btn_shutdown_click)
         self.button_fset = Tk.Button(self.root,text="set",width=10,command=self.on_btn_fset_click)
-        self.button_sset = Tk.Button(self.root,text="set/change",width=10,command=self.on_btn_sset_click)
+        self.button_sset = Tk.Button(self.root,text="set/change",width=10,command=self.on_btn_ssetf_click)
 
         self.button_sset.grid(row=3,column=3, columnspan=1, padx=2, pady=10)
         self.button_insert.grid(row=4,column=3, columnspan=1, padx=2, pady=10)
@@ -218,9 +218,15 @@ class mainWindow:
                 else:
                     self.state[i].set(False)
 
-    def on_btn_sset_click(self):
+    def on_btn_ssetf_click(self):
         self.appendNowState()
         self.frame = self.frame+1
+        self.updateDisp()
+
+    def on_btn_ssetb_click(self):
+        self.appendNowState()
+        if self.frame > 0:
+            self.frame = self.frame-1
         self.updateDisp()
 
     def on_btn_next_click(self):
@@ -298,8 +304,10 @@ class mainWindow:
             self.on_btn_next_click()
         elif key == 'b':
             self.on_btn_prev_click()
+        elif key == 'g':
+            self.on_btn_ssetf_click()
         elif key == 'f':
-            self.on_btn_sset_click()
+            self.on_btn_ssetb_click()
         elif key == 'h':
             self.on_btn_sset_click()
         self.updateGaitChart()
