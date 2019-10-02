@@ -12,7 +12,7 @@ from tkinter import filedialog
 
 class mainWindow:
 
-    def __init__(self, nLegs_=6):
+    def __init__(self, nLegs_=6, frames_=0):
 
         self.nLegs = nLegs_
         self.legLabels = [""] * self.nLegs
@@ -34,6 +34,9 @@ class mainWindow:
         self.frame = 0
         self.frameTime = datetime.time()
         self.result = []
+
+        if frames_ > 0 :
+            self.createBlankResult(frames_)
 
         for i in range(self.nLegs):
             self.state.append(Tk.BooleanVar())
@@ -200,6 +203,13 @@ class mainWindow:
         else:
             self.result.append(tmp)
 
+    def createBlankResult(self, frames_):
+        for i in range(frames_):
+            tmp = [i, "00:00:00.000000", i]
+            for j in range(self.nLegs):
+                tmp.append(0)
+            self.result.append(tmp)
+
     def updateState(self):
         if not self.frame == len(self.result):
             for i in range(self.nLegs):
@@ -291,11 +301,19 @@ class mainWindow:
 
 
 import sys
+import argparse
+ 
 
 if __name__ == "__main__":
 
-    args = sys.argv
-    if len(args) > 1 :
-        app = mainWindow(int(args[1]))
-    else:
-        app = mainWindow()
+    parser = argparse.ArgumentParser(description='',add_help=True,)
+
+    parser.add_argument('-l','--leg_number', type=int, default=6)
+    parser.add_argument('-f','--frames', type=int, default=0)
+    args = parser.parse_args()
+
+
+    # if len(args) > 1 :
+    #     app = mainWindow(int(args[1]))
+    # else:
+    app = mainWindow(args.leg_number, args.frames)
