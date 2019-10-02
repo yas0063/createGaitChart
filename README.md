@@ -19,20 +19,31 @@ It probably works on anaconda environment. However, if numpy and tkinter are ins
 $ python createGaitChart.py 
 ```
 
-The default number of legs is six (L1, L2, L3, R1, R2, R3). By using an argument, the number of legs can be chaged.
+The default number of legs is six (L1, L2, L3, R1, R2, R3). By using '-l' option, the number of legs can be chaged.
 
 If the target is a spider,
 ```
-$ python createGaitChart.py 8
+$ python createGaitChart.py -l 8
 ```
 If the target is a cat,
 ```
-$ python createGaitChart.py 4
+$ python createGaitChart.py -l 4
 ```
 If the target is a crow
 ```
-$ python createGaitChart.py 2
+$ python createGaitChart.py -l 2
 ```
+
+The chart area can be secured at boot up with '-f' option.
+```
+$ python createGaitChart.py -f 1000
+```
+
+Of course, options can be used together.
+```
+$ python createGaitChart.py -f 1000 -l 8
+```
+
 
 #### input data
 
