@@ -21,7 +21,7 @@ class mainWindow:
             self.legLabels[i+int(self.nLegs/2)] = "R"+str(i+1)
 
         self.shortcut_keys ={'a':0, 's':1, 'd':2, 'q':3, 'w':4, 'e':5}
-
+        self.shortcut_fill_keys={'A':0, 'S':1, 'D':2, 'Q':3, 'W':4, 'E':5}
 
         self.root = Tk.Tk()
         self.root.title(u"create gait chart")
@@ -282,10 +282,18 @@ class mainWindow:
         else:
             s.set(True)
 
+    def fill_state(self, leg):
+        for f in range(self.frame,-1,-1):
+            if self.result[f][leg+3] == 1:
+                for i in range(f, self.frame+1,1):
+                    self.result[i][leg+3] = 1
+
     def key_callback(self, event):
         key = event.keysym
         if key in self.shortcut_keys.keys():
             self.toggle_state(self.state[self.shortcut_keys[key]])
+        elif key in self.shortcut_fill_keys.keys():
+            self.fill_state(self.shortcut_fill_keys[key])
         elif key == 'n':
             self.on_btn_next_click()
         elif key == 'b':

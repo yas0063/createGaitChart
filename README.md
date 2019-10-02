@@ -62,7 +62,12 @@ Shortcut keys will help input work.
   - f: set/chage button (append current state to result)
   - n: next button (move next frame)
   - b: prev button (move previous frame)
-
+  - A: fill L1 with black until last black cell
+  - S: fill L2 with black until last black cell
+  - D: fill L3 with black until last black cell
+  - Q: fill R1 with black until last black cell
+  - W: fill R2 with black until last black cell
+  - E: fill R3 with black until last black cell
 
 ## createFig
 
