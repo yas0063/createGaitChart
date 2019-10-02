@@ -288,18 +288,28 @@ class mainWindow:
         else:
             s.set(True)
 
-    def fill_state(self, leg):
+    def fill_state_black(self, leg):
         for f in range(self.frame,-1,-1):
             if self.result[f][leg+3] == 1:
                 for i in range(f, self.frame+1,1):
                     self.result[i][leg+3] = 1
+    
+    def fill_state_white(self, leg):
+        for f in range(self.frame,-1,-1):
+            if self.result[f][leg+3] == 0:
+                for i in range(f, self.frame+1,1):
+                    self.result[i][leg+3] = 0
 
     def key_callback(self, event):
         key = event.keysym
+    
         if key in self.shortcut_keys.keys():
-            self.toggle_state(self.state[self.shortcut_keys[key]])
+            if ((event.state & 0x0004) != 0 ):
+                self.fill_state_white(self.shortcut_keys[key])
+            else:
+                self.toggle_state(self.state[self.shortcut_keys[key]])
         elif key in self.shortcut_fill_keys.keys():
-            self.fill_state(self.shortcut_fill_keys[key])
+            self.fill_state_black(self.shortcut_fill_keys[key])
         elif key == 'n':
             self.on_btn_next_click()
         elif key == 'b':

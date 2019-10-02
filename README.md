@@ -69,6 +69,13 @@ Shortcut keys will help input work.
   - Q: fill R1 with black until last black cell
   - W: fill R2 with black until last black cell
   - E: fill R3 with black until last black cell
+  - Ctrl-A: fill L1 with white until last black cell
+  - Ctrl-S: fill L2 with white until last black cell
+  - Ctrl-D: fill L3 with white until last black cell
+  - Ctrl-Q: fill R1 with white until last black cell
+  - Ctrl-W: fill R2 with white until last black cell
+  - Ctrl-E: fill R3 with white until last black cell
+
 
 ## createFig
 
